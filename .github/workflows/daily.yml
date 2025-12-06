@@ -1,0 +1,35 @@
+name: Daily YouTube Trending Fetch
+
+on:
+  schedule:
+    - cron: "30 0 * * *"   # Runs at 6:00 AM IST (00:30 UTC)
+  workflow_dispatch:        # Manual trigger
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run script
+      env:
+        YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      run: python scripts/main.py
+
+    - name: Commit new data
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add data/
+        git commit -m "Daily update - $(date '+%Y-%m-%d')" || echo "No changes to commit"
+        git push origin main || echo "No changes to push"
