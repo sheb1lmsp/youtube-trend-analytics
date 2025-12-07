@@ -21,8 +21,7 @@ def run():
     - Combine all into latest.csv
     """
     today = datetime.datetime.today()
-    BASE_DIR = os.path.abspath(".")
-    data_dir = os.path.join(BASE_DIR, "..", "data")
+    data_dir = os.path.join(BASE_DIR, "data") # Need to go back while running local
     year_dir = os.path.join(data_dir, str(today.year))
 
     # Ensure year directory exists

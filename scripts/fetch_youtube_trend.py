@@ -11,7 +11,7 @@ load_dotenv()
 API_KEY = os.getenv('YOUTUBE_API_KEY')
 YOUTUBE = build("youtube", "v3", developerKey=API_KEY)
 
-# Encode the filepath that is suitable with the github actions (Not needed with local run)
+# Encode the filepath that is suitable with GitHub Actions (Not needed with local run)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Load category mapping
