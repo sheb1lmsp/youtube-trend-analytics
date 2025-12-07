@@ -3,7 +3,7 @@ name: Daily YouTube Trending Fetch
 on:
   schedule:
     - cron: "30 0 * * *"   # Runs at 6:00 AM IST (00:30 UTC)
-  workflow_dispatch:        # Manual trigger
+  workflow_dispatch:
 
 jobs:
   fetch:
@@ -24,16 +24,23 @@ jobs:
     - name: Run script
       env:
         YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-      run: python scripts/main.py
+      run: |
+        cd $GITHUB_WORKSPACE
+        python scripts/main.py
 
     - name: Commit new data
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-    
-        # Pull latest changes first
+
+        # FIRST pull latest changes
         git pull --rebase origin main || echo "Nothing to pull"
-    
+
+        # THEN add new CSV files
         git add data/
+
+        # Commit changes if any
         git commit -m "Daily update - $(date '+%Y-%m-%d')" || echo "No changes to commit"
-        git push || echo "No changes to push"
+
+        # Push to GitHub
+        git push origin main || echo "No changes to push"
