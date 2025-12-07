@@ -5,8 +5,11 @@ import time
 import json
 from fetch_youtube_trend import get_trending_videos
 
+# Encode the filepath that is suitable with GitHub Actions (Not needed with local run)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Load list of YouTube-supported countries
-with open("../countries.json", 'r') as f:
+with open(os.path.join(BASE_DIR, "countries.json"), "r") as f:
     countries = json.load(f)
 
 def run():
