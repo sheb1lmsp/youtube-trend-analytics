@@ -11,10 +11,8 @@ load_dotenv()
 API_KEY = os.getenv('YOUTUBE_API_KEY')
 YOUTUBE = build("youtube", "v3", developerKey=API_KEY)
 
-BASE_DIR = os.getcwd()
-
 # Load category mapping
-with open(os.path.join(BASE_DIR, "..", "categories.json"), "r") as f:
+with open("../categories.json", "r") as f:
     cat_map = json.load(f)
 
 def get_trending_videos(region):
@@ -47,7 +45,6 @@ def get_trending_videos(region):
             "published_at": snippet['publishedAt'],
             "title": snippet["title"],
             "channel_title": snippet["channelTitle"],
-            "category_id": cid,
             "category_name": cat_map.get(cid, "Unknown"),
             "tags": ", ".join(snippet.get("tags", [])),
             "duration": duration_to_seconds(content.get("duration")),
@@ -59,4 +56,7 @@ def get_trending_videos(region):
             "comments": stats.get("commentCount")
         })
 
-    return pd.DataFrame(rows)
+        df = pd.DataFrame(rows)
+        df['published_at'] = pd.to_datetime(df['published_at'])
+
+    return df
