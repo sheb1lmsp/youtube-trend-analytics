@@ -10,7 +10,7 @@ all_data_path_list = list(DATA_DIR.glob('*/*/*.csv'))
 CHECK_TIME = time(6,5)
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-COUNTRY_FILE = os.path.join(BASE_DIR, "..", "country_names.json")
+COUNTRY_FILE = os.path.join(BASE_DIR, "country_names.json")
 
 with open(COUNTRY_FILE, 'r') as f:
     country_names = json.load(f)
