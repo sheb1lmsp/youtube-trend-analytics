@@ -3,6 +3,7 @@ import pandas as pd
 from dotenv import load_dotenv
 import json
 import os
+from datetime import datetime, timezone
 from convert_duration import duration_to_seconds
 
 # Load API Key
@@ -42,21 +43,42 @@ def get_trending_videos(region):
 
         rows.append({
             "video_id": v["id"],
-            "published_at": snippet['publishedAt'],
-            "title": snippet["title"],
-            "channel_title": snippet["channelTitle"],
+            "country": region,
+            "fetched_at": datetime.now(timezone.utc).isoformat(),
+
+            # Snippet
+            "published_at": snippet.get("publishedAt"),
+            "title": snippet.get("title"),
+            "localized_title": snippet.get("localized", {}).get("title"),
+            "channel_title": snippet.get("channelTitle"),
+            "channel_id": snippet.get("channelId"),
+            "category_id": cid,
             "category_name": cat_map.get(cid, "Unknown"),
             "tags": ", ".join(snippet.get("tags", [])),
+            "tag_count": len(snippet.get("tags", [])),
+            "thumbnail": snippet.get("thumbnails", {}).get("high", {}).get("url"),
+            "default_language": snippet.get("defaultLanguage"),
+            "audio_language": snippet.get("defaultAudioLanguage"),
+            "is_live": snippet.get("liveBroadcastContent") == "live",
+
+            # Content details
             "duration": duration_to_seconds(content.get("duration")),
+            "duration_raw": content.get("duration"),
             "definition": content.get("definition"),
             "caption_available": content.get("caption"),
             "licensed_content": content.get("licensedContent"),
-            "views": stats.get("viewCount"),
-            "likes": stats.get("likeCount"),
-            "comments": stats.get("commentCount")
+            "embeddable": content.get("embeddable"),
+            "made_for_kids": content.get("madeForKids"),
+
+            # Stats
+            "views": int(stats.get("viewCount", 0)),
+            "likes": int(stats.get("likeCount", 0)),
+            "comments": int(stats.get("commentCount", 0)),
         })
 
-        df = pd.DataFrame(rows)
-        df['published_at'] = pd.to_datetime(df['published_at'])
+
+    df = pd.DataFrame(rows)
+    df['published_at'] = pd.to_datetime(df['published_at'])
+    df['fetched_at'] = pd.to_datetime(df['fetched_at'])
 
     return df
