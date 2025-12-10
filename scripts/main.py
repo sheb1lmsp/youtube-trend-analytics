@@ -43,7 +43,7 @@ def run():
             # Save daily file
             file_path = os.path.join(
                 country_dir,
-                f"trending_{country}_{today.strftime("%Y-%m-%d")}.csv"
+                f"trending_{country}_{today.strftime('%Y-%m-%d')}.csv"
             )
 
             df.to_csv(file_path, index=False)
