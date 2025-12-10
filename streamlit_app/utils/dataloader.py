@@ -5,12 +5,13 @@ from pathlib import Path
 import os
 import json
 
-DATA_DIR = Path('../data')
+BASE_DIR = os.abspath('.')
+DATA_DIR = Path(os.path.join(BASE_DIR, 'data'))
 all_data_path_list = list(DATA_DIR.glob('*/*/*.csv'))
-CHECK_TIME = time(6,5)
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-COUNTRY_FILE = os.path.join(BASE_DIR, "country_names.json")
+COUNTRY_FILE = os.path.join(BASE_DIR, "streamlit_app","country_names.json")
+
+CHECK_TIME = time(6,5)
 
 with open(COUNTRY_FILE, 'r') as f:
     country_names = json.load(f)
@@ -24,8 +25,6 @@ def get_country_name(alpha_2):
 
 @st.cache_data()
 def get_latest_data():
-    print(f"\n\n{DATA_DIR}\n\n")
-    print(f"\n\n{COUNTRY_FILE}\n\n")
     today = datetime.now()
     if today.time() > CHECK_TIME:
         pattern = f"{today.strftime('%Y-%m-%d')}"
