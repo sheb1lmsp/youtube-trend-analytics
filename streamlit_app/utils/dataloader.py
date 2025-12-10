@@ -12,9 +12,6 @@ CHECK_TIME = time(6,5)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 COUNTRY_FILE = os.path.join(BASE_DIR, "country_names.json")
 
-print(DATA_DIR)
-print(COUNTRY_FILE)
-
 with open(COUNTRY_FILE, 'r') as f:
     country_names = json.load(f)
 
@@ -27,6 +24,8 @@ def get_country_name(alpha_2):
 
 @st.cache_data()
 def get_latest_data():
+    print(f"\n\n{DATA_DIR}\n\n")
+    print(f"\n\n{COUNTRY_FILE}\n\n")
     today = datetime.now()
     if today.time() > CHECK_TIME:
         pattern = f"{today.strftime('%Y-%m-%d')}"
