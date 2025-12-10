@@ -3,7 +3,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 from wordcloud import WordCloud
-import json
 from utils import dataloader
 from styles import load_css, apply_plotly_theme
 
@@ -19,9 +18,6 @@ st.set_page_config(
 load_css()
 apply_plotly_theme()
 
-with open('country_names.json', 'r') as f:
-    country_names = json.load(f)
-
 # ----------------------------------------------------------------------------
 # LOAD TODAY'S TRENDING DATA
 # ----------------------------------------------------------------------------
@@ -31,6 +27,8 @@ with st.spinner("Loading today's trending videos..."):
         st.session_state['latest_df'] = latest_df
     else:
         latest_df = st.session_state['latest_df']
+
+country_names = latest_df['country_name'].unique().to_list()
 
 # ----------------------------------------------------------------------------
 # PAGE HEADER
