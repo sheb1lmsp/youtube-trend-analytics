@@ -25,6 +25,7 @@ apply_plotly_theme()
 
 BASE_DIR = os.path.abspath(".")
 COUNTRY_PATH = os.path.join(BASE_DIR, 'country_names.json')
+print(COUNTRY_PATH)
 
 with open(COUNTRY_PATH, 'r') as f:
     country_names = json.load(f)
