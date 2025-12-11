@@ -43,11 +43,7 @@ st.markdown("""
 # DATA LOADING
 # ----------------------------------------------------------------------------
 with st.spinner("🌍 Fetching today's trending videos..."):
-    if 'latest_df' not in st.session_state:
-        latest_df = dataloader.get_latest_data()
-        st.session_state['latest_df'] = latest_df
-    else:
-        latest_df = st.session_state['latest_df']
+    latest_df = dataloader.get_latest_data()
 
 # ----------------------------------------------------------------------------
 # COUNTRY SELECTION
