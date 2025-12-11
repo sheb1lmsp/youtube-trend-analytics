@@ -22,14 +22,8 @@ apply_plotly_theme()
 # LOAD TODAY'S DATA
 # ----------------------------------------------------------------------------
 with st.spinner("Loading today's trending videos..."):
-    if 'latest_df' not in st.session_state:
-        latest_df = dataloader.get_latest_data()
-        st.session_state['latest_df'] = latest_df
-    else:
-        latest_df = st.session_state['latest_df']
-
-df = st.session_state['latest_df']
-
+    latest_df = dataloader.get_latest_data()
+    
 # ----------------------------------------------------------------------------
 # PAGE HEADER
 # ----------------------------------------------------------------------------
@@ -43,7 +37,7 @@ st.markdown("""
 # ----------------------------------------------------------------------------
 # COUNTRY SELECTION
 # ----------------------------------------------------------------------------
-all_countries = sorted(df["country_name"].unique())
+all_countries = sorted(latest_df["country_name"].unique())
 
 st.markdown('<div class="section-header"><h3>🔎 Select Countries</h3></div>', unsafe_allow_html=True)
 
@@ -69,7 +63,7 @@ if not countries:
     st.warning("Please select at least one country.")
     st.stop()
 
-filtered = df[df["country_name"].isin(countries)]
+filtered = latest_df[latest_df["country_name"].isin(countries)]
 
 # ----------------------------------------------------------------------------
 # AGGREGATED METRICS
@@ -137,7 +131,7 @@ cols = st.columns(len(countries))
 
 for col, country in zip(cols, countries):
     top_vid = (
-        df[df["country_name"] == country]
+        latest_df[latest_df["country_name"] == country]
         .sort_values("views", ascending=False)
         .iloc[0]
     )

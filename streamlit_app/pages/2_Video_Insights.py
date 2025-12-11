@@ -22,12 +22,8 @@ apply_plotly_theme()
 # LOAD TODAY'S TRENDING DATA
 # ----------------------------------------------------------------------------
 with st.spinner("Loading today's trending videos..."):
-    if 'latest_df' not in st.session_state:
-        latest_df = dataloader.get_latest_data()
-        st.session_state['latest_df'] = latest_df
-    else:
-        latest_df = st.session_state['latest_df']
-
+    latest_df = dataloader.get_latest_data()
+    
 country_names = latest_df['country_name'].unique().tolist()
 
 # ----------------------------------------------------------------------------
